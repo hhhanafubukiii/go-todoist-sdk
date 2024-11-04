@@ -2,62 +2,80 @@ package gotodoistsdk
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 )
 
 func (t *AuthorizationRequest) GetAuthenticationURL(client_id, scope, state string) (string, error) {
 	if scope == "" || client_id == "" || state == "" {
-		log.Fatal("Empty params")
+		panic("Empty values!")
 	}
 
-	t.client_id = client_id
-	t.scope = scope
-	t.state = state
+	authRequest := &AuthorizationRequest{
+		client_id: client_id,
+		scope:     scope,
+		state:     state,
+	}
 
-	authorizationURL := getUrl(AUTHORIZE_ENDPOINT)
+	authorizationURL, err := getUrl(AUTHORIZE_ENDPOINT)
+	if err != nil {
+		panic(err)
+	}
 
-	return fmt.Sprintf("%s?client_id=%s&scope=%s&state=%s", authorizationURL, t.client_id, t.scope, t.state), nil
+	return fmt.Sprintf("%s?client_id=%s&scope=%s&state=%s", authorizationURL,
+		authRequest.client_id,
+		authRequest.scope,
+		authRequest.state), nil
 }
 
-func (t *TokenRequest) GetAccessToken(client_id, client_secret, code string) (*TokenResponse, error) {
+func (t *TokenRequest) GetAccessToken(client_id, client_secret, code string) (string, error) {
 	if client_secret == "" || client_id == "" || code == "" {
 		panic("Empty values!")
 	}
 
-	t.client_id = client_id
-	t.client_secret = client_secret
-	t.code = code
-
-	url := getUrl(TOKEN_ENDPOINT)
-
-	body, err := t.getBody()
-
-	if err != nil {
-		log.Fatal(err)
+	tokenRequest := &TokenRequest{
+		client_id:     client_id,
+		client_secret: client_secret,
+		code:          code,
 	}
 
+	url, err := getUrl(TOKEN_ENDPOINT)
+	if err != nil {
+		panic(err)
+	}
+
+	body, err := t.setBody()
+	if err != nil {
+		panic(err)
+	}
 	request, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
-
 	if err != nil {
 		panic(err)
 	}
-
 	response, err := t.sendRequest(request)
-
 	if err != nil {
 		panic(err)
 	}
 
-	// return ...
+	TokenResponse := &TokenResponse{}
+	dr := json.NewDecoder(response.Body).Decode(TokenResponse)
+	if dr != nil {
+		panic(dr)
+	}
+
+	if response.StatusCode != 200 {
+		panic(response.Status)
+	}
+
+	return TokenResponse.Token, nil
 }
 
-func getUrl(path string) string {
-	return fmt.Sprintf("%s/%s", AUTH_BASE_URL, path)
+func getUrl(path string) (string, error) {
+	return fmt.Sprintf("%s/%s", AUTH_BASE_URL, path), nil
 }
 
-func (t *TokenRequest) getBody() ([]byte, error) {
+func (t *TokenRequest) setBody() ([]byte, error) {
 	s := fmt.Sprintf(`{
 		"client_id": %s,
 		"client_secret": %s,
@@ -69,14 +87,12 @@ func (t *TokenRequest) getBody() ([]byte, error) {
 
 func (t *TokenRequest) sendRequest(request *http.Request) (*http.Response, error) {
 	client := &http.Client{}
+	defer request.Body.Close()
 
 	response, err := client.Do(request)
-
 	if err != nil {
 		panic(err)
 	}
-
-	defer request.Body.Close()
 
 	return response, nil
 }
