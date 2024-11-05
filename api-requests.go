@@ -1,5 +1,7 @@
 package gotodoistsdk
 
+import "net/http"
+
 // struct with params for oauth request
 type AuthorizationRequest struct {
 	client_id string
@@ -24,6 +26,12 @@ type TokenRequest struct {
 type TokenResponse struct {
 	Token     string `json:"access_token"`
 	TokenType string `json:"token_type"`
+}
+
+type Client struct {
+	client        *http.Client
+	client_id     string
+	client_secret string
 }
 
 // ...
