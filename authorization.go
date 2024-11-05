@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (t *AuthorizationRequest) GetAuthenticationURL(client_id, scope, state string) (string, error) {
+func (t *Client) GetAuthenticationURL(client_id, scope, state string) (string, error) {
 	if scope == "" || client_id == "" || state == "" {
 		panic("Empty values!")
 	}
@@ -29,7 +29,7 @@ func (t *AuthorizationRequest) GetAuthenticationURL(client_id, scope, state stri
 		authRequest.state), nil
 }
 
-func (t *TokenRequest) GetAccessToken(client_id, client_secret, code string) (string, error) {
+func (t *Client) GetAccessToken(client_id, client_secret, code string) (string, error) {
 	if client_secret == "" || client_id == "" || code == "" {
 		panic("Empty values!")
 	}
@@ -45,7 +45,7 @@ func (t *TokenRequest) GetAccessToken(client_id, client_secret, code string) (st
 		panic(err)
 	}
 
-	body, err := t.setBody()
+	body, err := tokenRequest.setBody()
 	if err != nil {
 		panic(err)
 	}
@@ -53,7 +53,7 @@ func (t *TokenRequest) GetAccessToken(client_id, client_secret, code string) (st
 	if err != nil {
 		panic(err)
 	}
-	response, err := t.sendRequest(request)
+	response, err := tokenRequest.sendRequest(request)
 	if err != nil {
 		panic(err)
 	}
