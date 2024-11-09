@@ -34,4 +34,6 @@ type Client struct {
 	client_secret string
 }
 
-// ...
+func NewClient(client *http.Client, clientId, clientSecret string) *Client {
+	return &Client{client, clientId, clientSecret}
+}
