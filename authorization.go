@@ -89,7 +89,7 @@ func (t *Client) doHTTP(path string, body []byte) (string, error) {
 
 	response, err := t.client.Do(req)
 	if err != nil {
-		return "", err
+		return "93", err
 	}
 	defer response.Body.Close()
 	if response.StatusCode != 200 {
