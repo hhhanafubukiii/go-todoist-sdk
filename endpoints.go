@@ -1,4 +1,4 @@
-package go_todoist_sdk
+package github.com/hhhanafubukiii/go-todoist-sdk
 
 const (
 	BASE_URL      = "https://api.todoist.com"
