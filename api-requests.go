@@ -1,8 +1,7 @@
-package github.com/hhhanafubukiii/go-todoist-sdk
+package go_todoist_sdk
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -88,14 +87,10 @@ func (t *Client) createAddTaskRequest(
 ) (*http.Response, error) {
 	client := t.client
 
-	requestURL := fmt.Sprintf(`%s/rest/%s/%s?content=%s&priority=%s&description=%s&due_string=%s`,
+	requestURL := fmt.Sprintf(`%s/rest/%s/%s`,
 		BASE_URL,
 		REST_VERSION,
 		TASKS_ENDPOINT,
-		name,
-		priority,
-		description,
-		date,
 	)
 
 	requestBody := setAddTaskBody(name, priority, description, date)
@@ -126,10 +121,7 @@ func setAddTaskBody(name, priority, description, date string) []byte {
 							"date": %s
 							}
 							`, name, priority, description, date)
-	body, err := json.Marshal(s)
-	if err != nil {
-		log.Fatal(err)
-	}
+	body := []byte(s)
 
 	return body
 }
