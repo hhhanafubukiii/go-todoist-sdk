@@ -139,7 +139,7 @@ func (t *Client) DeleteTask(taskID, accessToken string) error {
 }
 
 func (t *Client) UpdateTaskName(taskID, accessToken, newName string) error {
-	requestURL := fmt.Sprintf("%s/rest/%s/%s/%s/close", BASE_URL, REST_VERSION, TASKS_ENDPOINT, taskID)
+	requestURL := fmt.Sprintf("%s/rest/%s/%s/%s", BASE_URL, REST_VERSION, TASKS_ENDPOINT, taskID)
 	requestBody := []byte(fmt.Sprintf(`{
 												"content": "%s"
 										      }`, newName))
@@ -165,7 +165,7 @@ func (t *Client) UpdateTaskName(taskID, accessToken, newName string) error {
 }
 
 func (t *Client) UpdateTaskPriority(taskID, accessToken, newPriority string) error {
-	requestURL := fmt.Sprintf("%s/rest/%s/%s/%s/close", BASE_URL, REST_VERSION, TASKS_ENDPOINT, taskID)
+	requestURL := fmt.Sprintf("%s/rest/%s/%s/%s", BASE_URL, REST_VERSION, TASKS_ENDPOINT, taskID)
 	requestBody := []byte(fmt.Sprintf(`{
 												"priority": "%s"
 										      }`, newPriority))
@@ -191,7 +191,7 @@ func (t *Client) UpdateTaskPriority(taskID, accessToken, newPriority string) err
 }
 
 func (t *Client) UpdateTaskDueDate(taskID, accessToken, newDueDate string) error {
-	requestURL := fmt.Sprintf("%s/rest/%s/%s/%s/close", BASE_URL, REST_VERSION, TASKS_ENDPOINT, taskID)
+	requestURL := fmt.Sprintf("%s/rest/%s/%s/%s", BASE_URL, REST_VERSION, TASKS_ENDPOINT, taskID)
 	requestBody := []byte(fmt.Sprintf(`{
 												"due_string": "%s"
 										      }`, newDueDate))
@@ -217,7 +217,7 @@ func (t *Client) UpdateTaskDueDate(taskID, accessToken, newDueDate string) error
 }
 
 func (t *Client) UpdateTaskDescription(taskID, accessToken, newDescription string) error {
-	requestURL := fmt.Sprintf("%s/rest/%s/%s/%s/close", BASE_URL, REST_VERSION, TASKS_ENDPOINT, taskID)
+	requestURL := fmt.Sprintf("%s/rest/%s/%s/%s", BASE_URL, REST_VERSION, TASKS_ENDPOINT, taskID)
 	requestBody := []byte(fmt.Sprintf(`{
 												"description": "%s"
 										      }`, newDescription))
