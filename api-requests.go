@@ -25,10 +25,10 @@ type Task struct {
 }
 
 type AddTask struct {
-	name        string
-	priority    string
-	dueDate     string
-	description string
+	Name        string
+	Priority    string
+	DueDate     string
+	Description string
 }
 
 type AuthorizationRequest struct {
