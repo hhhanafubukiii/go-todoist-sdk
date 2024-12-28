@@ -121,7 +121,7 @@ func (t *Client) CloseTask(taskID, accessToken string) error {
 }
 
 func (t *Client) DeleteTask(taskID, accessToken string) error {
-	requestURL := fmt.Sprintf("%s/rest/%s/%s/%s/close", BASE_URL, REST_VERSION, TASKS_ENDPOINT, taskID)
+	requestURL := fmt.Sprintf("%s/rest/%s/%s/%s", BASE_URL, REST_VERSION, TASKS_ENDPOINT, taskID)
 	req, err := http.NewRequest(http.MethodDelete, requestURL, nil)
 	if err != nil {
 		log.Fatal(err)
